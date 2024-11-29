@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Building the Docker image...
+      - $(aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO_URI)
+      - docker build -t $ECR_REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - docker push $ECR_REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: yes
+
+env:
+  variables:
+    ECR_REPO_URI: "574844545380.dkr.ecr.us-east-1.amazonaws.com/todo-app-repo"
