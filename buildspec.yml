@@ -1,18 +1,20 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      docker: 19
+      nodejs: 16
   build:
     commands:
-      - echo Building the Docker image...
-      - $(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 574844545380.dkr.ecr.us-east-1.amazonaws.com)
-      - docker build -t $ECR_REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .
-      - docker push $ECR_REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
-
-artifacts:
-  files:
-    - '**/*'
-  discard-paths: yes
-
-env:
-  variables:
-    ECR_REPO_URI: "574844545380.dkr.ecr.us-east-1.amazonaws.com/todo-app-repo"
+      - echo "Building the Docker image..."
+      # Step 1: Get the ECR login password
+      - aws ecr get-login-password --region us-east-1 > password.txt
+      # Step 2: Log in to ECR with the password
+      - docker login --username AWS --password-stdin 574844545380.dkr.ecr.us-east-1.amazonaws.com < password.txt
+      # Step 3: Clean up the password file
+      - rm -f password.txt
+      # Build the Docker image
+      - docker build -t 574844545380.dkr.ecr.us-east-1.amazonaws.com/my-app:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      # Push the Docker image to ECR
+      - docker push 574844545380.dkr.ecr.us-east-1.amazonaws.com/my-app:$CODEBUILD_RESOLVED_SOURCE_VERSION
