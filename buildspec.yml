@@ -2,9 +2,12 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      docker: 19
-      nodejs: 16
+    # If you're using Docker in your build environment, you might not need to specify the runtime version.
+    # Docker is pre-installed in CodeBuild environments, but you can explicitly install it here if needed.
+    commands:
+      - echo Installing Docker...
+      - yum install -y docker  # If you're using a custom image that does not have Docker pre-installed (skip this if using standard CodeBuild image)
+
   build:
     commands:
       - echo "Building the Docker image..."
