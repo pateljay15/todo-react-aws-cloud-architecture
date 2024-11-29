@@ -18,6 +18,6 @@ phases:
       # Step 3: Clean up the password file
       - rm -f password.txt
       # Build the Docker image
-      - docker build -t 574844545380.dkr.ecr.us-east-1.amazonaws.com/my-app:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - docker build -t 574844545380.dkr.ecr.us-east-1.amazonaws.com/todo-app-repo:$CODEBUILD_RESOLVED_SOURCE_VERSION .
       # Push the Docker image to ECR
-      - docker push 574844545380.dkr.ecr.us-east-1.amazonaws.com/my-app:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push 574844545380.dkr.ecr.us-east-1.amazonaws.com/todo-app-repo:$CODEBUILD_RESOLVED_SOURCE_VERSION
